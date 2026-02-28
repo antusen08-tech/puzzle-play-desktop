@@ -310,14 +310,53 @@
         Array.from(e.target.files).forEach(file => {
             const reader = new FileReader();
             reader.onload = ev => {
-                if (!state.gallery.includes(ev.target.result)) {
-                    state.gallery.push(ev.target.result);
-                    localStorage.setItem('puzzleGallery', JSON.stringify(state.gallery));
-                    renderGallery();
-                }
+                const img = new Image();
+                img.onload = () => {
+                    const MAX_SIZE = 800; // Resize to max 800px to save storage
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) {
+                            height *= MAX_SIZE / width;
+                            width = MAX_SIZE;
+                        }
+                    } else {
+                        if (height > MAX_SIZE) {
+                            width *= MAX_SIZE / height;
+                            height = MAX_SIZE;
+                        }
+                    }
+
+                    const resizerCanvas = document.createElement('canvas');
+                    resizerCanvas.width = width;
+                    resizerCanvas.height = height;
+                    const resizerCtx = resizerCanvas.getContext('2d');
+                    resizerCtx.drawImage(img, 0, 0, width, height);
+
+                    // Compress to 70% quality JPEG
+                    const optimizedDataUrl = resizerCanvas.toDataURL('image/jpeg', 0.7);
+
+                    if (!state.gallery.includes(optimizedDataUrl)) {
+                        try {
+                            state.gallery.unshift(optimizedDataUrl);
+                            if (state.gallery.length > 30) {
+                                state.gallery.pop(); // Keep only last 30
+                            }
+                            localStorage.setItem('puzzleGallery', JSON.stringify(state.gallery));
+                            renderGallery();
+                        } catch (err) {
+                            alert('Gallery storage is full! Please delete some images.');
+                            state.gallery.shift();
+                        }
+                    }
+                };
+                img.src = ev.target.result;
             };
             reader.readAsDataURL(file);
         });
+        // reset input
+        e.target.value = '';
     });
 
     // ═══════════════════════════════════════════════
