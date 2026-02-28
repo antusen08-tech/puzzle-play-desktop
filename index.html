@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; script-src 'self'">
+    <meta name="description"
+        content="Puzzle Play Desktop — A stunning jigsaw puzzle game optimized for desktop browsers with mouse drag-and-drop and keyboard shortcuts.">
+    <title>Puzzle Play — Desktop Jigsaw Puzzle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ═══════════════ SIDEBAR NAV ═══════════════ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <span class="logo-icon">🧩</span>
+            <h1 class="logo-title">Puzzle<span class="logo-accent">Play</span></h1>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-screen="menu-screen" id="nav-play">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Play</span>
+            </button>
+            <button class="nav-item" data-screen="gallery-screen" id="nav-gallery">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <span>Gallery</span>
+            </button>
+            <button class="nav-item" data-screen="history-screen" id="nav-history">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>History</span>
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="shortcut-hints">
+                <span class="hint"><kbd>R</kbd> Shuffle</span>
+                <span class="hint"><kbd>P</kbd> Preview</span>
+                <span class="hint"><kbd>Esc</kbd> Back</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+    <main class="main-content">
+
+        <!-- ═══════════════ MENU SCREEN ═══════════════ -->
+        <div id="menu-screen" class="screen active">
+            <div class="screen-bg"></div>
+            <div class="menu-layout">
+                <div class="menu-left">
+                    <div class="welcome-section">
+                        <h2 class="welcome-title">Welcome to <span class="text-gradient">Puzzle Play</span></h2>
+                        <p class="welcome-sub">Click. Drag. Solve. Choose your image and grid size, then start puzzling!
+                        </p>
+                    </div>
+
+                    <div class="card settings-card">
+                        <div class="setting-group">
+                            <label class="setting-label">
+                                <span class="setting-label-text">Puzzle Size</span>
+                                <span class="setting-value" id="size-display">4 × 4</span>
+                            </label>
+                            <input type="range" id="size-slider" min="2" max="10" value="4" class="slider">
+                            <div class="slider-labels">
+                                <span>Easy (2×2)</span>
+                                <span>Hard (10×10)</span>
+                            </div>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="setting-label">
+                                <span class="setting-label-text">Or Upload Your Own</span>
+                            </label>
+                            <label class="upload-btn" for="image-upload" id="upload-label">
+                                <span class="upload-icon">📷</span>
+                                <span id="upload-text">Click to upload an image</span>
+                            </label>
+                            <div class="upload-filename" id="upload-filename" style="display:none">
+                                <span class="filename-icon">✅</span>
+                                <span id="filename-text"></span>
+                            </div>
+                            <input type="file" id="image-upload" accept="image/*" hidden>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" id="start-btn">
+                        <span class="btn-text">Start Puzzle</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+
+                <div class="menu-right">
+                    <div class="card">
+                        <label class="setting-label">
+                            <span class="setting-label-text">Choose Image</span>
+                        </label>
+                        <div class="image-grid" id="image-grid">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ GALLERY SCREEN ═══════════════ -->
+        <div id="gallery-screen" class="screen">
+            <div class="screen-bg"></div>
+            <div class="screen-inner">
+                <div class="screen-header">
+                    <h2 class="screen-title">🖼️ My Images</h2>
+                    <label class="btn-secondary" for="gallery-upload">
+                        <span>＋</span> Upload Image
+                    </label>
+                    <input type="file" id="gallery-upload" accept="image/*" multiple hidden>
+                </div>
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Filled by JS -->
+                </div>
+                <div class="empty-state" id="gallery-empty">
+                    <div class="empty-icon">🖼️</div>
+                    <p class="empty-text">No images yet</p>
+                    <p class="empty-sub">Upload photos to use as puzzles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ HISTORY SCREEN ═══════════════ -->
+        <div id="history-screen" class="screen">
+            <div class="screen-bg"></div>
+            <div class="screen-inner">
+                <div class="screen-header">
+                    <h2 class="screen-title">🏆 Puzzle History</h2>
+                    <button class="btn-secondary btn-danger" id="clear-history-btn">
+                        <span>🗑</span> Clear All
+                    </button>
+                </div>
+                <div class="history-table-wrap" id="history-table-wrap">
+                    <table class="history-table" id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Size</th>
+                                <th>Time</th>
+                                <th>Moves</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="history-empty">
+                    <div class="empty-icon">🏆</div>
+                    <p class="empty-text">No puzzles completed yet</p>
+                    <p class="empty-sub">Solve a puzzle and it will appear here</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ GAME SCREEN ═══════════════ -->
+        <div id="game-screen" class="screen">
+            <div class="game-layout">
+                <div class="game-center">
+                    <div class="game-header">
+                        <button class="btn-icon" id="back-btn" aria-label="Back to menu" title="Back to menu (Esc)">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <div class="game-stats">
+                            <div class="stat">
+                                <span class="stat-icon">⏱</span>
+                                <span class="stat-value" id="timer">0:00</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-icon">🖱️</span>
+                                <span class="stat-value" id="moves">0</span>
+                            </div>
+                        </div>
+                        <div class="game-actions">
+                            <button class="btn-secondary btn-sm" id="shuffle-btn" title="Shuffle (R)">🔀
+                                Shuffle</button>
+                            <button class="btn-secondary btn-sm" id="preview-btn" title="Preview (P)">🖼
+                                Preview</button>
+                        </div>
+                    </div>
+                    <div class="game-area" id="game-area">
+                        <canvas id="puzzle-canvas"></canvas>
+                    </div>
+                </div>
+                <div class="game-side" id="game-side">
+                    <div class="side-card">
+                        <h3 class="side-title">Reference</h3>
+                        <div class="reference-image-wrap">
+                            <img id="reference-image" src="" alt="Reference">
+                        </div>
+                    </div>
+                    <div class="side-card">
+                        <h3 class="side-title">Info</h3>
+                        <div class="side-info" id="side-info">
+                            <div class="info-row"><span>Grid</span><span id="info-grid">4×4</span></div>
+                            <div class="info-row"><span>Pieces</span><span id="info-pieces">16</span></div>
+                            <div class="info-row"><span>Placed</span><span id="info-placed">0 / 16</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ═══════════════ WIN MODAL ═══════════════ -->
+    <div id="win-overlay" class="overlay">
+        <canvas id="confetti-canvas"></canvas>
+        <div class="win-card">
+            <div class="win-emoji">🎉</div>
+            <h2 class="win-title">Puzzle Complete!</h2>
+            <div class="win-stats">
+                <div class="win-stat">
+                    <span class="win-stat-label">Time</span>
+                    <span class="win-stat-value" id="win-time">0:00</span>
+                </div>
+                <div class="win-stat">
+                    <span class="win-stat-label">Moves</span>
+                    <span class="win-stat-value" id="win-moves">0</span>
+                </div>
+            </div>
+            <button class="btn-primary" id="play-again-btn">
+                <span class="btn-text">Play Again</span>
+                <span class="btn-arrow">→</span>
+            </button>
+            <button class="btn-ghost" id="menu-btn">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ PREVIEW MODAL ═══════════════ -->
+    <div id="preview-overlay" class="overlay" style="display:none">
+        <div class="preview-card">
+            <img id="preview-image" src="" alt="Puzzle preview">
+            <p class="preview-hint">Click anywhere or press Esc to close</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
